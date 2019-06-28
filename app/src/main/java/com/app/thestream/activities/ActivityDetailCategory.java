@@ -111,6 +111,7 @@ public class ActivityDetailCategory extends AppCompatActivity {
         //set data and list adapter
         adapterChannel = new AdapterChannel(this, recyclerView, new ArrayList<Channel>(),recyclerView);
         recyclerView.setAdapter(adapterChannel);
+        recyclerView.addItemDecoration(new DefaultItemDecoration(5,5, 0, 0));
 
         // on item list clicked
         adapterChannel.setOnItemClickListener(new AdapterChannel.OnItemClickListener() {

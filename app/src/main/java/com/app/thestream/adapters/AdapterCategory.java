@@ -20,7 +20,7 @@ import java.util.List;
 
 import info.awesomedevelopment.tvgrid.library.TVGridView;
 
-public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolder> {
+public class AdapterCategory extends InputTrackingRecyclerViewAdapter<AdapterCategory.ViewHolder> {
 
     private List<Category> items = new ArrayList<>();
 
@@ -47,6 +47,7 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public AdapterCategory(Context context, List<Category> items,TVGridView tvGridView) {
+        super(context);
         this.items = items;
         this.tvGridView=tvGridView;
         ctx = context;
@@ -77,6 +78,8 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+
+
         final Category c = items.get(position);
         holder.itemView.setFocusable(true); holder.itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 

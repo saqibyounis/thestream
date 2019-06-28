@@ -118,6 +118,7 @@ public class FragmentCategory extends Fragment {
                 showInterstitialAd();
             }
         });
+        
         recyclerView.setAdapter(adapterCategory);
         // add a decoration
         recyclerView.addItemDecoration(new DefaultItemDecoration(5,5, 0, 0));
