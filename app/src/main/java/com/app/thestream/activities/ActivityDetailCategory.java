@@ -51,13 +51,14 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.awesomedevelopment.tvgrid.library.TVGridView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ActivityDetailCategory extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
+    private TVGridView recyclerView;
     private AdapterChannel adapterChannel;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Call<CallbackDetailCategory> callbackCall = null;
@@ -96,7 +97,7 @@ public class ActivityDetailCategory extends AppCompatActivity {
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue, R.color.red);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = (TVGridView) findViewById(R.id.recyclerView);
 
         if (Config.ENABLE_GRID_MODE) {
             recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), Config.GRID_SPAN_COUNT));
@@ -108,7 +109,7 @@ public class ActivityDetailCategory extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         //set data and list adapter
-        adapterChannel = new AdapterChannel(this, recyclerView, new ArrayList<Channel>());
+        adapterChannel = new AdapterChannel(this, recyclerView, new ArrayList<Channel>(),recyclerView);
         recyclerView.setAdapter(adapterChannel);
 
         // on item list clicked
@@ -129,6 +130,8 @@ public class ActivityDetailCategory extends AppCompatActivity {
                 showInterstitialAd();
             }
         });
+
+
 
         // detect when scroll reach bottom
         adapterChannel.setOnLoadMoreListener(new AdapterChannel.OnLoadMoreListener() {

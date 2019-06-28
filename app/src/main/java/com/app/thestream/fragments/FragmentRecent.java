@@ -35,6 +35,7 @@ import com.google.android.gms.ads.MobileAds;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.awesomedevelopment.tvgrid.library.TVGridView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +43,7 @@ import retrofit2.Response;
 public class FragmentRecent extends Fragment {
 
     View root_view, parent_view;
-    private RecyclerView recyclerView;
+    private TVGridView recyclerView;
     private AdapterChannel adapterChannel;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Call<CallbackChannel> callbackCall = null;
@@ -62,7 +63,7 @@ public class FragmentRecent extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) root_view.findViewById(R.id.swipe_refresh_layout_home);
         swipeRefreshLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue, R.color.red);
 
-        recyclerView = (RecyclerView) root_view.findViewById(R.id.recyclerViewHome);
+        recyclerView = (TVGridView) root_view.findViewById(R.id.recyclerViewHome);
 
         if (Config.ENABLE_GRID_MODE) {
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), Config.GRID_SPAN_COUNT));
@@ -74,7 +75,7 @@ public class FragmentRecent extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         //set data and list adapter
-        adapterChannel = new AdapterChannel(getActivity(), recyclerView, new ArrayList<Channel>());
+        adapterChannel = new AdapterChannel(getActivity(), recyclerView, new ArrayList<Channel>(),recyclerView);
         recyclerView.setAdapter(adapterChannel);
 
         // on item list clicked

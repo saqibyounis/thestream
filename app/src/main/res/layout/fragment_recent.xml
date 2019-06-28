@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background_color"
     android:orientation="vertical">
 
@@ -14,14 +15,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.RecyclerView
+            <info.awesomedevelopment.tvgrid.library.TVGridView
                 android:id="@+id/recyclerViewHome"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingBottom="3dp"
-                android:paddingTop="3dp"
-                android:scrollbars="none"
-                android:scrollingCache="true" />
+                app:tvg_animateSelectorChanges="true"
+                app:tvg_selectorPosition="over"
+                app:tvg_strokePosition="inside"
+                app:tvg_strokeColor="@android:color/white"
+                app:tvg_strokeWidth="2dp"
+                app:tvg_cornerRadius="3dp" />
 
             <include
                 android:id="@+id/lyt_no_item_home"

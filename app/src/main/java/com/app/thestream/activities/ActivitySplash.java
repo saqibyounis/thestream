@@ -2,6 +2,7 @@ package com.app.thestream.activities;
 
 import android.content.Intent;
 
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -25,6 +26,7 @@ import com.app.thestream.broadcast.broadcastRegister;
 
 import com.app.thestream.models.UpdateModel;
 import com.app.thestream.utils.Tools;
+import com.app.thestream.utils.UserPref;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
@@ -44,13 +46,13 @@ public class ActivitySplash extends AppCompatActivity implements BlackListSearch
     private ProgressBar progressBar;
     private InterstitialAd interstitialAd;
     String id = "0", cname = "";
-
+    boolean introFlag=true;
     private static final int REQUEST_CODE_REMOVE_APPS = 100;
     broadcastRegister br;
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        br.cancletask();
+        //br.cancletask();
 
 
     }
@@ -69,8 +71,25 @@ public class ActivitySplash extends AppCompatActivity implements BlackListSearch
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+         UserPref.sharedEditor(this);
+         SharedPreferences sharedPreferences=UserPref.getSharedPref(this);
+         if(sharedPreferences.getString("intro",null)!=null){
 
-        // Write a message to the database
+             introFlag=false;
+
+
+
+         }else{
+
+             SharedPreferences.Editor editor= UserPref.editor;
+             editor.putString("intro","done");
+             editor.commit();
+
+         }
+
+
+
+             // Write a mesusage to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("UpdateModel");
         myRef.addValueEventListener(new ValueEventListener() {
@@ -137,9 +156,17 @@ public class ActivitySplash extends AppCompatActivity implements BlackListSearch
             public void run() {
                 if (!isCancelled) {
                     if (id.equals("0")) {
-                        Intent intent = new Intent(ActivitySplash.this, IntroAct.class);
-                        startActivity(intent);
-                        finish();
+                        if(introFlag) {
+                            Intent intent = new Intent(ActivitySplash.this, IntroAct.class);
+                            startActivity(intent);
+                            finish();
+                        }else{
+
+                            Intent intent = new Intent(ActivitySplash.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+
+                        }
                     } else {
                         Intent intent = new Intent(ActivitySplash.this, ActivityOneSignalDetail.class);
                         intent.putExtra("id", id);

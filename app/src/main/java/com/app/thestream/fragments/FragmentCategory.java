@@ -2,11 +2,14 @@ package com.app.thestream.fragments;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -35,6 +38,7 @@ import com.google.android.gms.ads.MobileAds;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.awesomedevelopment.tvgrid.library.TVGridView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +46,7 @@ import retrofit2.Response;
 public class FragmentCategory extends Fragment {
 
     private View root_view, parent_view;
-    private RecyclerView recyclerView;
+    private TVGridView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private AdapterCategory adapterCategory;
     public static final String EXTRA_OBJC = "key.EXTRA_OBJC";
@@ -62,14 +66,15 @@ public class FragmentCategory extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) root_view.findViewById(R.id.swipe_refresh_layout_category);
         swipeRefreshLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue, R.color.red);
 
-        recyclerView = (RecyclerView) root_view.findViewById(R.id.recyclerViewCategory);
-        recyclerView.setHasFixedSize(true);
+        recyclerView = (TVGridView) root_view.findViewById(R.id.recyclerViewCategory);
+        adapterCategory = new AdapterCategory(getActivity(), new ArrayList<Category>(),recyclerView);
 
-        gaggeredGridLayoutManager = new StaggeredGridLayoutManager(1, 1);
+        /* recyclerView.setHasFixedSize(true);
+
+        gaggeredGridLayoutManager = new StaggeredGridLayoutManager(4, 1);
         recyclerView.setLayoutManager(gaggeredGridLayoutManager);
 
         //set data and list adapter
-        adapterCategory = new AdapterCategory(getActivity(), new ArrayList<Category>());
         recyclerView.setAdapter(adapterCategory);
 
         // on item list clicked
@@ -83,6 +88,39 @@ public class FragmentCategory extends Fragment {
                 showInterstitialAd();
             }
         });
+*/
+        //new recycler
+
+        gaggeredGridLayoutManager = new StaggeredGridLayoutManager(4, 1);
+        recyclerView.setLayoutManager(gaggeredGridLayoutManager);
+
+        // set the layout manager
+        /*recyclerView.setLayoutManager(manager);*/
+        // set the adapter
+        adapterCategory.setOnItemClickListener(new AdapterCategory.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, Category obj, int position) {
+                Intent intent = new Intent(getActivity(), ActivityDetailCategory.class);
+                intent.putExtra(EXTRA_OBJC, obj);
+                startActivity(intent);
+
+                showInterstitialAd();
+            }
+        });
+
+        adapterCategory.setmOnKeyListerner(new AdapterCategory.OnKeyListener() {
+            @Override
+            public void onItemClick(View view, Category obj, int position) {
+                Intent intent = new Intent(getActivity(), ActivityDetailCategory.class);
+                intent.putExtra(EXTRA_OBJC, obj);
+                startActivity(intent);
+
+                showInterstitialAd();
+            }
+        });
+        recyclerView.setAdapter(adapterCategory);
+        // add a decoration
+        recyclerView.addItemDecoration(new DefaultItemDecoration(5,5, 0, 0));
 
         // on swipe list
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -239,5 +277,19 @@ public class FragmentCategory extends Fragment {
             Log.d("AdMob", "AdMob Interstitial is Disabled");
         }
     }
+    private class SpaceItemDecoration extends RecyclerView.ItemDecoration {
 
+        private int space;
+
+        SpaceItemDecoration(int space) {
+            this.space = space;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
+                                   RecyclerView.State state) {
+            outRect.left = space;
+            outRect.top = space;
+        }
+    }
 }

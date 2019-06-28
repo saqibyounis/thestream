@@ -20,11 +20,13 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.awesomedevelopment.tvgrid.library.TVGridView;
+
 public class AdapterChannel extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final int VIEW_ITEM = 1;
     private final int VIEW_PROG = 0;
-
+ TVGridView tvGridView;
     private List<Channel> items = new ArrayList<>();
 
     private boolean loading;
@@ -41,10 +43,11 @@ public class AdapterChannel extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.mOnItemClickListener = mItemClickListener;
     }
 
-    public AdapterChannel(Context context, RecyclerView view, List<Channel> items) {
+    public AdapterChannel(Context context, RecyclerView view, List<Channel> items,TVGridView tvGridView) {
         this.items = items;
         this.context = context;
         lastItemViewDetector(view);
+        this.tvGridView=tvGridView;
     }
 
     public class OriginalViewHolder extends RecyclerView.ViewHolder {
@@ -93,6 +96,14 @@ public class AdapterChannel extends RecyclerView.Adapter<RecyclerView.ViewHolder
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        holder.itemView.setFocusable(true); holder.itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(final View view, final boolean b) {
+                tvGridView.selectView(view, b);
+            }
+        });
+
         if (holder instanceof OriginalViewHolder) {
             final Channel p = items.get(position);
             OriginalViewHolder vItem = (OriginalViewHolder) holder;

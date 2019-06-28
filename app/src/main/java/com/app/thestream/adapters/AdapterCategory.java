@@ -2,6 +2,7 @@ package com.app.thestream.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,24 +18,37 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.awesomedevelopment.tvgrid.library.TVGridView;
+
 public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolder> {
 
     private List<Category> items = new ArrayList<>();
 
     private Context ctx;
     private OnItemClickListener mOnItemClickListener;
+    private OnKeyListener mOnKeyListerner;
+    private TVGridView tvGridView;
 
     public interface OnItemClickListener {
         void onItemClick(View view, Category obj, int position);
     }
 
+    public interface OnKeyListener{
+
+        void onItemClick(View view, Category obj, int position);
+    }
+     public void setmOnKeyListerner(final OnKeyListener keyListerner){
+
+        this.mOnKeyListerner=keyListerner;
+     }
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
         this.mOnItemClickListener = mItemClickListener;
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public AdapterCategory(Context context, List<Category> items) {
+    public AdapterCategory(Context context, List<Category> items,TVGridView tvGridView) {
         this.items = items;
+        this.tvGridView=tvGridView;
         ctx = context;
     }
 
@@ -64,7 +78,13 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Category c = items.get(position);
+        holder.itemView.setFocusable(true); holder.itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
+            @Override
+            public void onFocusChange(final View view, final boolean b) {
+                tvGridView.selectView(view, b);
+            }
+        });
         holder.category_name.setText(c.category_name);
 
         Picasso.with(ctx)
@@ -78,6 +98,18 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
                 if (mOnItemClickListener != null) {
                     mOnItemClickListener.onItemClick(view, c, position);
                 }
+            }
+        });
+
+        holder.lyt_parent.setOnKeyListener(new View.OnKeyListener() {
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if(KeyEvent.KEYCODE_DPAD_CENTER==keyCode)
+                    mOnKeyListerner.onItemClick(v,c,position);
+
+                return false;
             }
         });
     }
