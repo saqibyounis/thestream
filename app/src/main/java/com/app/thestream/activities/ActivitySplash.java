@@ -93,7 +93,7 @@ public class ActivitySplash extends AppCompatActivity implements BlackListSearch
 
                     startActivity(new Intent(ActivitySplash.this,UpdateActivity.class));
                 }else {
-                    br=new broadcastRegister(ActivitySplash.this);
+                   /* br=new broadcastRegister(ActivitySplash.this);
                     br.regBroadcast();
                     RootBeer rootBeer = new RootBeer(ActivitySplash.this);
                     if (rootBeer.isRooted()) {
@@ -101,7 +101,10 @@ public class ActivitySplash extends AppCompatActivity implements BlackListSearch
                         finish();
                     } else {
                         new BlackListScanTask(ActivitySplash.this, ActivitySplash.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                    }
+                    }*/
+                handleSplashLogic();
+
+
                 }
             }
 
@@ -134,7 +137,7 @@ public class ActivitySplash extends AppCompatActivity implements BlackListSearch
             public void run() {
                 if (!isCancelled) {
                     if (id.equals("0")) {
-                        Intent intent = new Intent(ActivitySplash.this, MainActivity.class);
+                        Intent intent = new Intent(ActivitySplash.this, IntroAct.class);
                         startActivity(intent);
                         finish();
                     } else {

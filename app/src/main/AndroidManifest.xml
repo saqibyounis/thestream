@@ -23,14 +23,12 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".activities.UpdateActivity"></activity>
+        <activity android:name=".activities.IntroAct"
+            android:label="Intro Act" />
         <activity
             android:name=".activities.ActivitySplash"
             android:configChanges="orientation|keyboardHidden|screenSize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.MainActivity"
