@@ -20,12 +20,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -263,7 +266,23 @@ public class ActivityDetailChannel extends AppCompatActivity {
 
             }
         });
+        ImageButton playbtn= findViewById(R.id.playbtn);
+        playbtn.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode==KeyEvent.KEYCODE_DPAD_CENTER || keyCode==KeyEvent.KEYCODE_ENTER &&KeyEvent.ACTION_DOWN==event.getAction())
+                    playChannel();
+                return false;
 
+            }
+        });
+
+        playbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playChannel();
+            }
+        });
         channel_description.setBackgroundColor(Color.parseColor("#ffffff"));
         channel_description.setFocusableInTouchMode(false);
         channel_description.setFocusable(false);
@@ -286,6 +305,34 @@ public class ActivityDetailChannel extends AppCompatActivity {
                 + "</body></html>";
 
         channel_description.loadDataWithBaseURL(null, text, mimeType, encoding, null);
+    }
+
+    private void playChannel() {
+        if (NetworkCheck.isNetworkAvailable(ActivityDetailChannel.this)) {
+
+            if (str_channel_type != null && str_channel_type.equals("YOUTUBE")) {
+                Intent i = new Intent(ActivityDetailChannel.this, ActivityYoutubePlayer.class);
+                i.putExtra("id", str_video_id);
+                startActivity(i);
+            } else {
+                if (str_url != null && str_url.startsWith("rtmp://")) {
+                    Intent intent = new Intent(ActivityDetailChannel.this, ActivityRtmpPlayer.class);
+                    intent.putExtra("url", str_url);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(ActivityDetailChannel.this, ActivityStreamPlayer.class);
+                    intent.putExtra("url", str_url);
+                    startActivity(intent);
+                }
+            }
+
+            showInterstitialAd();
+
+        } else {
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.network_required), Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 
     public void rtlLayout() {

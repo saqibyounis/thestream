@@ -3,4 +3,8 @@
     <color name="color_focus_normal">#0b83ef</color>
     <color name="color_focus_tab_view">#d7292b</color>
     <color name="color_focus_poster">#eb641e</color>
+
+    <color name="button_pressed">#ff8a00</color>
+    <color name="button_focused">#ff8a00</color>
+    <color name="button_default">#1c76bb</color>
 </resources>

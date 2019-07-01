@@ -3,6 +3,7 @@ package com.app.thestream.adapters;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,7 +107,7 @@ public class AdapterChannel extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         if (holder instanceof OriginalViewHolder) {
             final Channel p = items.get(position);
-            OriginalViewHolder vItem = (OriginalViewHolder) holder;
+            final OriginalViewHolder vItem = (OriginalViewHolder) holder;
 
             vItem.channel_name.setText(p.channel_name);
             vItem.channel_category.setText(p.category_name);
@@ -127,12 +128,36 @@ public class AdapterChannel extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         .into(vItem.channel_image);
             }
 
-            vItem.lyt_parent.setOnClickListener(new View.OnClickListener() {
+          vItem.lyt_parent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (mOnItemClickListener != null) {
                         mOnItemClickListener.onItemClick(view, p, position);
                     }
+                }
+            });
+
+            vItem.itemView.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                    if(keyCode==KeyEvent.KEYCODE_DPAD_CENTER || keyCode==KeyEvent.KEYCODE_ENTER &&KeyEvent.ACTION_DOWN==event.getAction())
+                        mOnItemClickListener.onItemClick(v, p, position);
+
+                    return false;
+                }
+
+
+            }
+
+
+            );
+            holder.itemView.setFocusable(true);
+            holder.itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+                @Override
+                public void onFocusChange(final View view, final boolean b) {
+                    tvGridView.selectView(view, b);
                 }
             });
         } else {

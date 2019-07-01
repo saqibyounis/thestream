@@ -104,17 +104,21 @@ public class AdapterCategory extends InputTrackingRecyclerViewAdapter<AdapterCat
             }
         });
 
-        holder.lyt_parent.setOnKeyListener(new View.OnKeyListener() {
+        holder.itemView.setOnKeyListener(new View.OnKeyListener() {
+                                            @Override
+                                            public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                                                if(keyCode==KeyEvent.KEYCODE_DPAD_CENTER || keyCode==KeyEvent.KEYCODE_ENTER &&KeyEvent.ACTION_DOWN==event.getAction())
+                                                    mOnItemClickListener.onItemClick(v, c, position);
 
-                if(KeyEvent.KEYCODE_DPAD_CENTER==keyCode)
-                    mOnKeyListerner.onItemClick(v,c,position);
+                                                return false;
+                                            }
 
-                return false;
-            }
-        });
+
+                                        }
+
+
+        );
     }
 
     public void setListData(List<Category> items){

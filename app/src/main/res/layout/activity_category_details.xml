@@ -32,7 +32,7 @@
                 app:tvg_selectorPosition="over"
                 app:tvg_strokePosition="inside"
                 app:tvg_strokeColor="@android:color/white"
-                app:tvg_strokeWidth="2dp"
+                app:tvg_strokeWidth="4dp"
                 app:tvg_cornerRadius="3dp"
                 />
 
